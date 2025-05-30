@@ -55,10 +55,30 @@ const getAllContacts = async (data: {
     return contacts;
 };
 
+const findContactsForDelete = (ids: string[]) => {
+    return prisma.contact.findMany({
+        where: {
+            id: {
+                in: ids,
+            },
+        },
+    });
+};
+
 const deleteContact = (id: string) => {
     return prisma.contact.delete({
         where: {
             id: id,
+        },
+    });
+};
+
+const deleteManyContacts = (ids: string[]) => {
+    return prisma.contact.deleteMany({
+        where: {
+            id: {
+                in: ids,
+            },
         },
     });
 };
@@ -84,6 +104,8 @@ export {
     getContactByEmail,
     getContactById,
     getAllContacts,
+    findContactsForDelete,
     deleteContact,
+    deleteManyContacts,
     updateContact,
 };

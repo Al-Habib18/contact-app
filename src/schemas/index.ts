@@ -5,6 +5,10 @@ import { SortType, Status } from "../types";
 
 export const idSchema = z.string().uuid();
 
+export const listIdSchema = z.array(idSchema);
+
+export const emailSchema = z.string().email();
+
 export const createContactSchema = z.object({
     name: z.string().min(3).max(50),
     email: z.string().email(),
