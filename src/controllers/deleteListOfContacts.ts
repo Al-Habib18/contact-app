@@ -8,15 +8,15 @@ const deleteListOfContactController = async (req: Request, res: Response) => {
     try {
         const { ids } = req.body;
 
-        // ❗ Proper null/undefined check
+        // Proper null/undefined check
         if (!Array.isArray(ids) || ids.length === 0) {
-            return res.status(400).json({ message: "Ids are required" });
+            res.status(400).json({ message: "Ids are required" });
         }
 
-        // ✅ Validate with Zod
+        // Validate with Zod
         const validation = listIdSchema.safeParse(ids);
         if (!validation.success) {
-            return res.status(400).json({ message: validation.error.message });
+            res.status(400).json({ message: validation.error.message });
         }
 
         // Find which contacts exist
@@ -27,21 +27,19 @@ const deleteListOfContactController = async (req: Request, res: Response) => {
         );
 
         if (existingIds.length === 0) {
-            return res
-                .status(404)
-                .json({ message: "No matching contacts found." });
+            res.status(404).json({ message: "No matching contacts found." });
         }
 
         // Delete existing ones only
         const result = await deleteManyContacts(existingIds);
 
-        return res.status(200).json({
+        res.status(200).json({
             message: `${result.count} contact(s) deleted.`,
             notFoundIds,
         });
     } catch (err) {
         console.error("Delete Contacts Error:", err);
-        return res.status(500).json({ message: "Internal server error" });
+        res.status(500).json({ message: "Internal server error" });
     }
 };
 
