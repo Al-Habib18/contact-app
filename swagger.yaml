@@ -1,0 +1,412 @@
+# @format
+
+openapi: 3.0.0
+servers:
+    - description: Development
+      url: http://localhost:4000/api
+info:
+    description: This is an contact API
+    version: "1.0.0"
+    title: Auths API
+    contact:
+        email: alhabib607273@gmail.com
+    license:
+        name: Apache 2.0
+        url: "http://www.apache.org/licenses/LICENSE-2.0.html"
+tags:
+    - name: Contact
+      description: Contact Endpoints
+paths:
+    /contacts:
+        post:
+            summary: Create a contact
+            tags: [Contact]
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            type: object
+                            properties:
+                                name:
+                                    type: string
+                                    example: John Doe
+                                email:
+                                    type: string
+                                    example: 6vMl7@example.com
+                                stutus:
+                                    type: string
+                                    example: active
+            responses:
+                "200":
+                    description: Success
+                    content:
+                        "application/json":
+                            schema:
+                                type: object
+                                properties:
+                                    code:
+                                        type: integer
+                                        format: int32
+                                        example: 200
+                                    message:
+                                        type: string
+                                        example: Success
+                                    data:
+                                        type: object
+                                        properties:
+                                            id:
+                                                type: integer
+                                                format: int32
+                                                example: 1
+                                            name:
+                                                type: string
+                                                example: John Doe
+                                            email:
+                                                type: string
+                                                example: 6vMl7@example.com
+                                            user:
+                                                type: string
+                                                example: 3lk123l123l13
+                                            merchant:
+                                                type: string
+                                                example: 3lksf123l1sdf3l13
+                                            updatedAt:
+                                                type: string
+                                                example: 2023-01-01T00:00:00.000Z
+                                            createdAt:
+                                                type: string
+                                                example: 2023-01-01T00:00:00.000Z
+        get:
+            summary: Get all contacts
+            tags: [Contact]
+            parameters:
+                - $ref: "#/components/parameters/pageParam"
+                - $ref: "#/components/parameters/limitParam"
+                - $ref: "#/components/parameters/sortTypeParam"
+            responses:
+                "200":
+                    description: Success
+                    content:
+                        "application/json":
+                            schema:
+                                type: object
+                                properties:
+                                    code:
+                                        type: integer
+                                        format: int32
+                                        example: 200
+                                    message:
+                                        type: string
+                                        example: Success
+                                    data:
+                                        type: array
+                                        items:
+                                            type: object
+                                            properties:
+                                                id:
+                                                    type: integer
+                                                    format: int32
+                                                    example: 1
+                                                name:
+                                                    type: string
+                                                    example: John Doe
+                                                email:
+                                                    type: string
+                                                    example: 6vMl7@example.com
+                                                status:
+                                                    type: string
+                                                    enum:
+                                                        - "INACTIVE"
+                                                        - "ACTIVE"
+                                                    default: "INACTIVE"
+                                    pagination:
+                                        type: object
+                                        properties:
+                                            page:
+                                                type: integer
+                                                example: 1
+                                            limit:
+                                                type: integer
+                                                example: 10
+                                            totalItems:
+                                                type: integer
+                                                example: 10
+                                            totalPages:
+                                                type: integer
+                                                example: 1
+                                    links:
+                                        type: object
+                                        properties:
+                                            self:
+                                                type: string
+                                                example: "/api/v1/contacts?expand=&limit=10&page=1&q=&sortBy=updatedAt&sortType=dsc"
+        delete:
+            summary: delete list of contacts
+            tags: [Contact]
+            requestBody:
+                required: true
+                content:
+                    "application/json":
+                        schema:
+                            type: object
+                            properties:
+                                ids:
+                                    type: array
+                                    items:
+                                        type: integer
+                                        example: 11231kl13123
+            responses:
+                "200":
+                    description: Success
+                    content:
+                        "application/json":
+                            schema:
+                                type: object
+                                properties:
+                                    code:
+                                        type: integer
+                                        format: int32
+                                        example: 200
+                                    message:
+                                        type: string
+                                        example: contacts deleted successfully
+    /contacts/imports:
+        get:
+            summary: Import contacts
+            tags: [Contact]
+            responses:
+                "200":
+                    description: Success
+                    content:
+                        "application/json":
+                            schema:
+                                type: object
+                                properties:
+                                    code:
+                                        type: integer
+                                        example: 200
+                                    message:
+                                        type: string
+                                        example: contact imported successfully
+                                    data:
+                                        type: object
+                                        properties:
+                                            id:
+                                                type: integer
+                                                format: int32
+                                                example: 1
+                                            name:
+                                                type: string
+                                                example: John Doe
+                                            email:
+                                                type: string
+                                                example: 6vMl7@example.com
+    /contacts/dropdown:
+        get:
+            summary: Get dropdown data
+            tags: [Contact]
+            responses:
+                "200":
+                    description: Success
+                    content:
+                        "application/json":
+                            schema:
+                                type: array
+                                items:
+                                    type: object
+                                    properties:
+                                        value:
+                                            type: integer
+                                            format: int32
+                                            example: 11231231231
+                                        label:
+                                            type: string
+                                            example: John Doe
+    /contacts/{id}:
+        delete:
+            summary: Delete a contact
+            tags: [Contact]
+            parameters:
+                - $ref: "#/components/parameters/idPathParam"
+            responses:
+                "200":
+                    description: Success
+                    content:
+                        "application/json":
+                            schema:
+                                type: object
+                                properties:
+                                    code:
+                                        type: integer
+                                        format: int32
+                                        example: 200
+                                    message:
+                                        type: string
+                                        example: contact deleted successfully
+        put:
+            summary: Update a contact
+            tags: [Contact]
+            parameters:
+                - $ref: "#/components/parameters/idPathParam"
+            requestBody:
+                required: true
+                content:
+                    "application/json":
+                        schema:
+                            type: object
+                            properties:
+                                name:
+                                    type: string
+                                    example: Jhone
+                                email:
+                                    type: string
+                                    example: ah312@gmail.com
+                                status:
+                                    type: string
+                                    enum:
+                                        - "ACTIVE"
+                                        - "INACTIVE"
+            responses:
+                "200":
+                    description: Success
+                    content:
+                        "application/json":
+                            schema:
+                                type: object
+                                properties:
+                                    code:
+                                        type: string
+                                        example: 200
+                                    message:
+                                        type: string
+                                        example: contact updated successfully
+                                    data:
+                                        type: object
+                                        properties:
+                                            id:
+                                                type: string
+                                                example: lsdflqe311
+                                            name:
+                                                type: string
+                                                example: Jhone doe
+                                            email:
+                                                type: string
+                                                example: lsl23hk1l12
+                                            status:
+                                                type: string
+                                                example: ACTIVE
+components:
+    parameters:
+        pageParam:
+            in: query
+            name: page
+            description: current page number
+            required: true
+            schema:
+                type: integer
+                format: int32
+                example: 2
+        limitParam:
+            in: query
+            name: limit
+            description: maximum items to be returned
+            required: true
+            schema:
+                type: integer
+                format: int32
+                example: 10
+        sortTypeParam:
+            in: query
+            name: sortType
+            description: type of sort (asc or dsc)
+            schema:
+                type: string
+                enum: [asc, desc]
+                default: desc
+        sortByParam:
+            in: query
+            name: sortBy
+            description: Sort Key
+            schema:
+                type: string
+                enum: [createdAt, updatedAt]
+                default: updatedAt
+
+        idPathParam:
+            in: path
+            name: id
+            required: true
+            description: Item Id
+            schema:
+                type: string
+                example: 1d2sf3sf12f31dflsd242df
+    responses:
+        "500":
+            description: Internal Server Error
+            content:
+                "application/json":
+                    schema:
+                        type: object
+                        properties:
+                            code:
+                                type: integer
+                                format: int32
+                                example: 500
+                            error:
+                                type: string
+                                example: Internal Server Error
+                            message:
+                                type: string
+                                example: We are sorry for the inconvenience. Please try again later
+        "400":
+            description: Bad Request
+            content:
+                "application/json":
+                    schema:
+                        type: object
+                        properties:
+                            code:
+                                type: integer
+                                format: int32
+                                example: 400
+                            error:
+                                type: string
+                                example: Bad Request
+                            message:
+                                type: string
+                                example: Bad Request
+        "401":
+            description: Unauthorized
+            content:
+                application/json:
+                    schema:
+                        type: object
+                        properties:
+                            code:
+                                type: integer
+                                format: int32
+                                example: 401
+                            error:
+                                type: string
+                                example: Unauthorized
+                            message:
+                                type: string
+                                example: You don't have the right permissions
+        "404":
+            description: Recource Not Found
+            content:
+                application/json:
+                    schema:
+                        type: object
+                        properties:
+                            code:
+                                type: integer
+                                format: int32
+                                example: 404
+                            error:
+                                type: string
+                                example: Not Found
+                            message:
+                                type: string
+                                example: Requested resource not found
